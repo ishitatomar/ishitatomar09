@@ -1,1 +1,108 @@
-hello world!
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+void append(char *, char *, int, int, char *, int *);
+void delete(char *, int, int, char *, int *);
+void print(char *, int, int);
+void undo(char *, char *, int *);
+
+int main() {
+    int k, ch, l, n, x;
+    char str[50] = "", new[10], history[10];
+    do {
+        printf("input choice\n1-append\n2-delete\n3-print character\n4-undo\n");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                getchar();
+                printf("enter string to append\n");
+                gets(new);
+                l = strlen(str);
+                n = strlen(new);
+                x = strlen(history);
+                append(str, new, l, n, history, &x);
+                printf("\n");
+                puts(str);
+                printf("\n");
+                break;
+
+            case 2:
+                printf("input k");
+                scanf("%d", &k);
+                l = strlen(str);
+                x = strlen(history);
+                delete(str, k, l, history, &x);
+                printf("\n");
+                puts(str);
+                printf("\n");
+                break;
+
+            case 3:
+                printf("input k");
+                scanf("%d", &k);
+                l = strlen(str);
+                printf("\n");
+                print(str, k, l);
+                printf("\n");
+                break;
+
+            case 4:
+                x = strlen(history);
+                undo(str, history, &x);
+                printf("\n");
+                puts(str);
+                printf("\n");
+                break;
+        }
+    } while (ch <= 4);
+
+    return 0;
+}
+
+void append(char *p, char *s, int l, int n, char *t, int *x) {
+    int i;
+    for (i = 0; i < n; i++) {
+        *(t + i) = *(p + i);
+        (*x)++;
+    }
+    for (i = 0; i < n; i++) {
+        *(p + i + l) = (*(s + i));
+    }
+    *(p + i + l) = '\0';
+}
+
+void delete(char *p, int k, int l, char *t, int *x) {
+    int i;
+    if (k > l) {
+        printf("Error: Cannot delete more characters than present.\n");
+    } else {
+        for (i = l - 1; i > l - k - 1; i--) {
+            *(t + (*x)) = *(p + i);
+            (*x)++;
+        }
+        *(p + i + 1) = '\0';
+    }
+}
+
+void print(char *p, int k, int l) {
+    if (k > l) {
+        printf("Error: Cannot delete more characters than present.\n");
+    } else {
+        printf("%c", *(p + k - 1));
+    }
+}
+
+void undo(char *p, char *t, int *x) {
+    int i;
+    if ((*x) == 0) {
+        printf("nothing to undo");
+    } else {
+        for (i = 0; i < (*x); i++) {
+            *(p + i) = *(t + i);
+        }
+    }
+}
+
